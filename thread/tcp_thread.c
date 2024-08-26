@@ -12,7 +12,7 @@ struct SockInfo
 	struct sockaddr_in addr; // 地址信息
 };
 
-struct SockInfo infos[128];
+struct SockInfo infos[128]; // 最大支持128个客户端
 
 void *working(void *arg)
 {
@@ -21,7 +21,7 @@ void *working(void *arg)
 		struct SockInfo *info = (struct SockInfo *)arg;
 		// 接收数据
 		char buf[1024];
-		int ret = read(info->fd, buf, sizeof(buf));
+		int ret = read(info->fd, buf, sizeof(buf)); // 阻塞 IO
 		if (ret == 0)
 		{
 			printf("客户端已经关闭连接...\n");
@@ -36,7 +36,7 @@ void *working(void *arg)
 		}
 		else
 		{
-			write(info->fd, buf, strlen(buf) + 1);
+			write(info->fd, buf, strlen(buf) + 1); // 回发数据
 		}
 	}
 	return NULL;
@@ -79,7 +79,7 @@ int main()
 	int max = sizeof(infos) / sizeof(infos[0]);
 	for (int i = 0; i < max; ++i)
 	{
-		bzero(&infos[i], sizeof(infos[i]));
+		bzero(&infos[i], sizeof(infos[i])); // 重置
 		infos[i].fd = -1;
 		infos[i].tid = -1;
 	}
@@ -111,8 +111,8 @@ int main()
 			exit(0);
 		}
 		pinfo->fd = connfd;
-		pthread_create(&pinfo->tid, NULL, working, pinfo);
-		pthread_detach(pinfo->tid);
+		pthread_create(&pinfo->tid, NULL, working, pinfo); // 创建线程
+		pthread_detach(pinfo->tid);						   // 线程分离, 父线程不等待子线程结束
 	}
 
 	// 释放资源
