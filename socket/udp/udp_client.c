@@ -16,7 +16,8 @@ int main()
 	struct sockaddr_in seraddr;
 	seraddr.sin_family = AF_INET;
 	seraddr.sin_port = htons(9999);
-	inet_pton(AF_INET, "127.0.0.1", &seraddr.sin_addr);
+	// inet_pton(AF_INET, "127.0.0.1", &seraddr.sin_addr);
+	seraddr.sin_addr.s_addr = inet_addr("127.0.0.1"); // target server ip address is local
 
 	char buf[1024];
 	char ipbuf[64];

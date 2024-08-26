@@ -16,7 +16,7 @@ int main()
 	struct sockaddr_in addr;
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(9999);
-	addr.sin_addr.s_addr = INADDR_ANY;
+	addr.sin_addr.s_addr = INADDR_ANY;							// bind to any address
 	int ret = bind(fd, (struct sockaddr *)&addr, sizeof(addr)); // bind to port 9999
 	if (ret < 0)
 	{
@@ -33,7 +33,7 @@ int main()
 	{
 		memset(buf, 0, sizeof(buf));
 		int rlen = recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr *)&cliaddr, &len);
-		printf("client ip: %s, data: %d\n",
+		printf("client ip: %s, port: %d\n",
 			   inet_ntop(AF_INET, &cliaddr.sin_addr, ipbuf, sizeof(ipbuf)),
 			   ntohs(cliaddr.sin_port));
 
